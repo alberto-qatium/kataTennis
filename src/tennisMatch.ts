@@ -1,11 +1,6 @@
-import { Score } from "./score";
+import { MatchScore } from "./matchScore";
 import { Team } from "./team";
 
-const defaultScore ={
-    points: 0,
-    games: 0,
-    sets: 0
-}
 const SETS_TO_WIN_MATCH = 2
 const MIN_POINTS_TO_WIN_GAME = 3
 const MIN_GAMES_TO_WIN_SET = 6
@@ -19,17 +14,17 @@ tennisArgot.set(2,"Thirty")
 tennisArgot.set(3,"Forty")
 
 export class TennisMatch {
+    private homeTeam: Team;
+    private forageinTeam: Team;
+    private scores: MatchScore;
 
-    homeTeam: Team;
-    forageinTeam: Team;
-    scores: Map<Team, Score>;
     constructor(homeTeam: Team, forageinTeam: Team) {
         if (homeTeam.numberOfPlayers() != forageinTeam.numberOfPlayers()) 
             throw new Error("Each team must have the same number of members");
 
         this.homeTeam = homeTeam
         this.forageinTeam = forageinTeam
-        this.scores = this.initializeScores();
+        this.scores =  new MatchScore(this.homeTeam, this.forageinTeam);
     }
 
     numberOfPlayers() {
@@ -51,68 +46,64 @@ export class TennisMatch {
     }
 
     setScoreForHomeTeam(points: number,games: number,sets: number){
-        this.scores.get(this.homeTeam)?.setScore(points,games,sets)
+        this.scores.setScore(points,games,sets, this.homeTeam)
     }
 
     setScoreForForageinTeam(points: number,games: number,sets: number){
-        this.scores.get(this.forageinTeam)?.setScore(points,games,sets)
+        this.scores.setScore(points,games,sets, this.forageinTeam)
     }
 
     private scoresAPoint(teamWins: Team, teamLoses: Team) {
-        if(!this.matchHasEnded() && this.scores.has(teamWins)){
-            this.scores.get(teamWins)?.scoresAPoint()
-            const pointsTeam1 = this.scores.get(teamWins)?.getPoints() || 0
-            const pointsTeam2 = this.scores.get(teamLoses)?.getPoints() || 0
-            if (this.hasWonAGame(pointsTeam1, pointsTeam2)) {
+        if(!this.matchHasEnded()){
+            this.scores.scoresAPoint(teamWins)
+            const {points: pointsTeamWins} = this.scores.getScore(teamWins)
+            const {points: pointsTeamLoses} = this.scores.getScore(teamLoses)
+            if (this.hasWonAGame(pointsTeamWins, pointsTeamLoses)) {
                 this.scoresAGame(teamWins, teamLoses);
             }
         }
     }
 
     private scoresAGame(teamWins: Team, teamLoses: Team) {
-        this.scores.get(teamWins)?.scoresAGame();
-        const gamesTeamWins = this.scores.get(teamWins)?.getGames() || 0
-        const gamesTeamLoses = this.scores.get(teamLoses)?.getGames() || 0
+        this.scores.scoresAGame(teamWins);
+        const {games: gamesTeamWins} = this.scores.getScore(teamWins)
+        const {games: gamesTeamLoses} = this.scores.getScore(teamLoses)
         if (this.hasWonASet(gamesTeamWins, gamesTeamLoses)) {
-            this.scores.get(teamWins)?.scoresASet();
-            this.scores.get(teamLoses)?.losesASet();
+            this.scores.scoresASet(teamWins);
+            this.scores.losesASet(teamLoses);
         } else {
-            this.scores.get(teamLoses)?.losesAGame();
+            this.scores.losesAGame(teamLoses);
         }
     }
 
     private printBoardWithSlang(team: Team) {
-        let {points, games, sets} = this.scores.get(team)?.getScore() || defaultScore;
+        let {points, games, sets} = this.scores.getScore(team);
         let slang = tennisArgot.get(points) || `${points}`;
         if(this.isDeuce()){
             slang = "Deuce"
         }else if(this.isInAdventage(team)){
             slang = "Advantage"
         }
+        
         return `${team.printPlayers()} ${slang} ${games} ${sets}`
     }
 
-    private initializeScores(){
-        let scoreMap = new Map<Team, Score>()
-        scoreMap.set(this.homeTeam, new Score())
-        scoreMap.set(this.forageinTeam, new Score())
-        return scoreMap
-    }
-
     private isDeuce() {
-        const pointsteam1 = this.scores.get(this.homeTeam)?.getPoints() || 0 
-        const pointsteam2 = this.scores.get(this.forageinTeam)?.getPoints() || 0
+        const {points: pointsteam1} = this.scores.getScore(this.homeTeam)
+        const {points: pointsteam2} = this.scores.getScore(this.forageinTeam)
+
         return pointsteam1 >= MIN_POINTS_TO_WIN_GAME 
             && pointsteam2 >= MIN_POINTS_TO_WIN_GAME 
             && pointsteam1 === pointsteam2 
     }
 
     private isInAdventage(team: Team){
-        const pointsTeam = this.scores.get(team)?.getPoints() || 0 
-        const pointsOtherTeam = 
-            team === this.homeTeam ? 
-            this.scores.get(this.forageinTeam)?.getPoints() || 0 : 
-            this.scores.get(this.homeTeam)?.getPoints() || 0  
+        const {points: pointsTeam} = this.scores.getScore(team)
+        const {points: pointsOtherTeam} = 
+            team.equals(this.homeTeam) ? 
+            this.scores.getScore(this.forageinTeam) : 
+            this.scores.getScore(this.homeTeam)  
+
         return pointsTeam >= MIN_POINTS_TO_WIN_GAME 
             && pointsOtherTeam >= MIN_POINTS_TO_WIN_GAME 
             && pointsTeam > pointsOtherTeam
@@ -134,7 +125,8 @@ export class TennisMatch {
     }
 
     private hasWonMatch(team: Team){
-        return this.scores.get(team)?.getSets() == SETS_TO_WIN_MATCH 
+        const {sets: setsWon} = this.scores.getScore(team)
+        return setsWon == SETS_TO_WIN_MATCH 
     }
 
     private matchHasEnded(){

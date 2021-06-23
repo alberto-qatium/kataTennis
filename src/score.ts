@@ -1,12 +1,13 @@
 export class Score{
-    point: number
-    game: number
-    set: number
+    private point: number
+    private game: number
+    private set: number
     constructor(){
         this.point = 0
         this.game = 0
         this.set = 0
     }
+    
     getScore(){
         return {
             points: this.point,
