@@ -21,6 +21,10 @@ export class MatchScore{
         return teamScore.getScore();
     }
 
+    getTeams(){
+        return this.scores.keys()
+    }
+
     scoresAPoint(team: Team) {
         const teamScore = this.scores.get(team)
         if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
@@ -32,7 +36,7 @@ export class MatchScore{
         if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
         teamScore.scoresAGame();
     }
-    
+
     scoresASet(team: Team) {
         const teamScore = this.scores.get(team)
         if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
