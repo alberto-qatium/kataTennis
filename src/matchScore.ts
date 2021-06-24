@@ -11,47 +11,47 @@ export class MatchScore{
 
     setScore(points: number, games: number, sets: number, team: Team) {
         const teamScore = this.scores.get(team)
-        if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
-        teamScore.setScore(points,games,sets);
+        if(!teamScore) this.showError(team);
+        teamScore!.setScore(points,games,sets);
     }
 
     getScore(team: Team): { points: number; games: number; sets: number; } {
         const teamScore = this.scores.get(team)
-        if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
-        return teamScore.getScore();
-    }
-
-    getTeams(){
-        return this.scores.keys()
+        if(!teamScore) this.showError(team);
+        return teamScore!.getScore();
     }
 
     scoresAPoint(team: Team) {
         const teamScore = this.scores.get(team)
-        if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
-        teamScore.scoresAPoint();
+        if(!teamScore) this.showError(team);
+        teamScore!.scoresAPoint();
     }
 
     scoresAGame(team: Team) {
         const teamScore = this.scores.get(team)
-        if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
-        teamScore.scoresAGame();
+        if(!teamScore) this.showError(team);
+        teamScore!.scoresAGame();
     }
 
     scoresASet(team: Team) {
         const teamScore = this.scores.get(team)
-        if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
-        teamScore.scoresASet();
+        if(!teamScore) this.showError(team);
+        teamScore!.scoresASet();
+    }
+
+    private showError(team: Team) {
+        this.showError(team);;
     }
 
     losesAGame(team: Team) {
         const teamScore = this.scores.get(team)
-        if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
-        teamScore.losesAGame();
+        if(!teamScore) this.showError(team);
+        teamScore!.losesAGame();
     }
 
     losesASet(team: Team) {
         const teamScore = this.scores.get(team)
-        if(!teamScore) throw new Error(`The team ${team} is not playing the match`)
-        teamScore.losesASet();
+        if(!teamScore) this.showError(team);
+        teamScore!.losesASet();
     }
 }

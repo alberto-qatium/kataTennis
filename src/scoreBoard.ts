@@ -21,7 +21,7 @@ export class ScoreBoard{
 
     private printBoardWithSlang(team: Team) {
         let {points, games, sets} = this.tennisMatch.matchScore.getScore(team);
-        let slang = tennisArgot[points] || `${points}`;
+        let slang = this.transformToSlang(points);
         if(this.tennisMatch.isAtDeuce()){
             slang = "Deuce"
         }else if(this.tennisMatch.isInAdventage(team)){
@@ -29,5 +29,9 @@ export class ScoreBoard{
         }
 
         return `${team.printPlayers()} ${slang} ${games} ${sets}`
+    }
+
+    private transformToSlang(points: number){
+        return tennisArgot[points] || `${points}`
     }
 }

@@ -41,11 +41,10 @@ describe("a scoreBoard in tennis", () => {
         const scoreBoard = new ScoreBoard(tennisMatch);
 
         tennisMatch.setScoreForHomeTeam(3,3,0)
-        tennisMatch.setScoreForForageinTeam(2,0,0)
+        tennisMatch.setScoreForForageinTeam(3,0,0)
   
-        expect(scoreBoard.render()).toEqual("Paco Forty 3 0\nLamo Thirty 0 0")
-        tennisMatch.scoresAPointForageinTeam()
         expect(scoreBoard.render()).toEqual("Paco Deuce 3 0\nLamo Deuce 0 0")
+        tennisMatch.scoresAPointHomeTeam()
+        expect(scoreBoard.render()).toEqual("Paco Advantage 3 0\nLamo Forty 0 0")
       })
-
 });

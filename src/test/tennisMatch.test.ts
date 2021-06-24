@@ -57,7 +57,7 @@ describe("a match of tennis", () => {
         tennisMatch.setScoreForForageinTeam(3,0,0);
 
         tennisMatch.scoresAPointHomeTeam();
-        expect(tennisMatch.isAtDeuce()).toEqual(true);
+        expect(tennisMatch.isAtDeuce()).toBeTruthy();
     })
 
     it("When each team is at Deuce and one of them scores a point, the score is Advantage for the team in the lead ", () => {
@@ -68,9 +68,9 @@ describe("a match of tennis", () => {
         tennisMatch.setScoreForHomeTeam(3,0,0)
         tennisMatch.setScoreForForageinTeam(3,0,0)
 
-        expect(tennisMatch.isInAdventage(teamA)).toEqual(false)
+        expect(tennisMatch.isInAdventage(teamA)).toBeFalsy()
         tennisMatch.scoresAPointHomeTeam()
-        expect(tennisMatch.isInAdventage(teamA)).toEqual(true)
+        expect(tennisMatch.isInAdventage(teamA)).toBeTruthy()
     })
 
     it("Each team is able to return to Deuce", () => {
@@ -81,9 +81,9 @@ describe("a match of tennis", () => {
         tennisMatch.setScoreForHomeTeam(4,0,0)
         tennisMatch.setScoreForForageinTeam(3,0,0)
 
-        expect(tennisMatch.isAtDeuce()).toEqual(false)
+        expect(tennisMatch.isAtDeuce()).toBeFalsy()
         tennisMatch.scoresAPointForageinTeam()
-        expect(tennisMatch.isAtDeuce()).toEqual(true)
+        expect(tennisMatch.isAtDeuce()).toBeTruthy()
     })
 
     it("A team can win a match", () => {
@@ -105,9 +105,9 @@ describe("a match of tennis", () => {
         tennisMatch.setScoreForHomeTeam(3,6,0)
         tennisMatch.setScoreForForageinTeam(2,6,0)
   
-        expect(tennisMatch.isAtTieBreak()).toEqual(true)
+        expect(tennisMatch.isAtTieBreak()).toBeTruthy()
         tennisMatch.scoresAPointHomeTeam()
-        expect(tennisMatch.isAtTieBreak()).toEqual(false)
+        expect(tennisMatch.isAtTieBreak()).toBeFalsy()
     })
 
     it("A team can win a set", () => {
@@ -130,7 +130,8 @@ describe("a match of tennis", () => {
         tennisMatch.setScoreForForageinTeam(2,4,1)
     
         tennisMatch.scoresAPointHomeTeam()
-        expect(tennisMatch.hasWonMatch(teamA)).toEqual(true)
+        expect(tennisMatch.hasWonMatch(teamA)).toBeTruthy()
+        expect(tennisMatch.matchHasEnded()).toBeTruthy()
     })
 })
 

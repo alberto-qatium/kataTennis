@@ -1,5 +1,4 @@
 import { MatchScore } from "./matchScore";
-import { ScoreBoard } from "./scoreBoard";
 import { Team } from "./team";
 
 export const SETS_TO_WIN_MATCH = 2
