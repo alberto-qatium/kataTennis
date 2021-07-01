@@ -8,23 +8,23 @@ const tennisArgot: string[] = [
 ]
 
 export class ScoreBoard{
-    private tennisMatch: TennisMatch
+    private match: TennisMatch
     constructor(match: TennisMatch){
-        this.tennisMatch = match
+        this.match = match
     }
 
     render() {
-        const homeTeamBoard = this.printBoardWithSlang(this.tennisMatch.homeTeam)
-        const forageinTeamBoard = this.printBoardWithSlang(this.tennisMatch.forageinTeam)
-        return `${homeTeamBoard}\n${forageinTeamBoard}` 
+        const homeTeamBoard = this.printBoardWithSlang(this.match.getLocalTeam())
+        const foreignTeamBoard = this.printBoardWithSlang(this.match.getVisitorTeam())
+        return `${homeTeamBoard}\n${foreignTeamBoard}` 
     }
 
     private printBoardWithSlang(team: Team) {
-        let {points, games, sets} = this.tennisMatch.matchScore.getScore(team);
+        let {points, games, sets} = this.match.getScore(team);
         let slang = this.transformToSlang(points);
-        if(this.tennisMatch.isAtDeuce()){
+        if(this.match.isAtDeuce()){
             slang = "Deuce"
-        }else if(this.tennisMatch.isInAdventage(team)){
+        }else if(this.match.isInAdventage(team)){
             slang = "Advantage"
         }
 

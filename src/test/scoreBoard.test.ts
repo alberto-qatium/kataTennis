@@ -7,44 +7,44 @@ import { ScoreBoard } from "../scoreBoard";
 describe("a scoreBoard in tennis", () => {
     
     it("shows the score with slang", () => {
-        const teamA = new Team([new Player("Paco")])
-        const teamB = new Team([new Player("Lamo")])
-        const tennisMatch = new TennisMatch(teamA,teamB)
-        const scoreBoard = new ScoreBoard(tennisMatch);
+        const local = new Team([new Player("Paco")])
+        const visitor = new Team([new Player("Lamo")])
+        const match = new TennisMatch(local,visitor)
+        const scoreBoard = new ScoreBoard(match);
 
-        tennisMatch.setScoreForHomeTeam(1,3,0)
-        tennisMatch.setScoreForForageinTeam(0,0,0)
+        match.setScoreFor(local, 1,3,0)
+        match.setScoreFor(visitor, 0,0,0)
   
         expect(scoreBoard.render()).toEqual("Paco Fifteen 3 0\nLamo Love 0 0")
-        tennisMatch.scoresAPointHomeTeam()
+        match.scoresAPoint(local)
         expect(scoreBoard.render()).toEqual("Paco Thirty 3 0\nLamo Love 0 0")
       })
 
       it("shows deuce when match is at Deuce", () => {
-        const teamA = new Team([new Player("Paco")])
-        const teamB = new Team([new Player("Lamo")])
-        const tennisMatch = new TennisMatch(teamA,teamB)
-        const scoreBoard = new ScoreBoard(tennisMatch);
+        const local = new Team([new Player("Paco")])
+        const visitor = new Team([new Player("Lamo")])
+        const match = new TennisMatch(local,visitor)
+        const scoreBoard = new ScoreBoard(match);
 
-        tennisMatch.setScoreForHomeTeam(3,3,0)
-        tennisMatch.setScoreForForageinTeam(2,0,0)
-  
+        match.setScoreFor(local, 3,3,0)
+        match.setScoreFor(visitor, 2,0,0)
+        
         expect(scoreBoard.render()).toEqual("Paco Forty 3 0\nLamo Thirty 0 0")
-        tennisMatch.scoresAPointForageinTeam()
+        match.scoresAPoint(visitor)
         expect(scoreBoard.render()).toEqual("Paco Deuce 3 0\nLamo Deuce 0 0")
       })
 
       it("shows Advantage when a team is at Advantage", () => {
-        const teamA = new Team([new Player("Paco")])
-        const teamB = new Team([new Player("Lamo")])
-        const tennisMatch = new TennisMatch(teamA,teamB)
-        const scoreBoard = new ScoreBoard(tennisMatch);
+        const local = new Team([new Player("Paco")])
+        const visitor = new Team([new Player("Lamo")])
+        const match = new TennisMatch(local,visitor)
+        const scoreBoard = new ScoreBoard(match);
 
-        tennisMatch.setScoreForHomeTeam(3,3,0)
-        tennisMatch.setScoreForForageinTeam(3,0,0)
+        match.setScoreFor(local, 3,3,0)
+        match.setScoreFor(visitor, 3,0,0)
   
         expect(scoreBoard.render()).toEqual("Paco Deuce 3 0\nLamo Deuce 0 0")
-        tennisMatch.scoresAPointHomeTeam()
+        match.scoresAPoint(local)
         expect(scoreBoard.render()).toEqual("Paco Advantage 3 0\nLamo Forty 0 0")
       })
 });

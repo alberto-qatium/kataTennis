@@ -3,10 +3,10 @@ import { Team } from "./team";
 
 export class MatchScore{
     private scores: Map<Team, Score>
-    constructor(homeTeam: Team, forageinTeam: Team){
+    constructor(homeTeam: Team, foreignTeam: Team){
         this.scores = new Map()
         this.scores.set(homeTeam, new Score())
-        this.scores.set(forageinTeam, new Score())
+        this.scores.set(foreignTeam, new Score())
     }
 
     setScore(points: number, games: number, sets: number, team: Team) {
@@ -20,7 +20,7 @@ export class MatchScore{
         if(!teamScore) this.showError(team);
         return teamScore!.getScore();
     }
-
+    // Todo: Estructuras repetidas?
     scoresAPoint(team: Team) {
         const teamScore = this.scores.get(team)
         if(!teamScore) this.showError(team);
@@ -42,7 +42,7 @@ export class MatchScore{
     private showError(team: Team) {
         this.showError(team);;
     }
-
+    // Todo: Desde fuera se indica cómo ha ido?
     losesAGame(team: Team) {
         const teamScore = this.scores.get(team)
         if(!teamScore) this.showError(team);
