@@ -1,11 +1,16 @@
+const MINIM_POINTS = 0
+const MINIM_GAMES = 0
+const MINIM_SETS = 0
+
 export class Score{
     private point: number
     private game: number
     private set: number
+
     constructor(){
-        this.point = 0
-        this.game = 0
-        this.set = 0
+        this.point = MINIM_POINTS
+        this.game = MINIM_GAMES
+        this.set = MINIM_SETS
     }
     
     getScore(){
@@ -17,8 +22,8 @@ export class Score{
     }
 
     setScore(point: number,game: number,set: number){
-        if(point < 0 || game < 0 || set < 0 ) 
-            throw new Error("You can not put a negative score")
+        validateScore(point, game, set) 
+
         this.point = point
         this.game = game
         this.set = set
@@ -59,11 +64,15 @@ export class Score{
     }
     
     private resetPoints() {
-        this.point = 0
+        this.point = MINIM_POINTS
     }
 
     private resetGames(){
         this.resetPoints()
-        this.game = 0
+        this.game = MINIM_GAMES
     }
+}
+
+function validateScore(point: number, game: number, set: number) {
+    if( point < MINIM_POINTS || game < MINIM_GAMES || set < MINIM_SETS ) throw new Error("You can not put a negative score") 
 }

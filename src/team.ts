@@ -14,19 +14,13 @@ export class Team {
     isBalancedWith(team: Team): boolean{
         return this.numberOfPlayers() === team.numberOfPlayers()
     }
-    
-    numberOfPlayers(){
-        return this.teamMates.length
-    }
-    
+
     printPlayers(){
         return this.teamMates.toString()
     }
-    // Todo: Porqué necesitamos saber si dos equipos son iguales?
-    equals(homeTeam: Team) : boolean {
-        return this.numberOfPlayers() == homeTeam.numberOfPlayers() && 
-        homeTeam.teamMates.includes(this.teamMates[1]) && this.teamMates[2] ?
-        homeTeam.teamMates.includes(this.teamMates[2]) : true
+    
+    private numberOfPlayers(){
+        return this.teamMates.length
     }
 
     private validatePlayerNumber(players: Player[]){
