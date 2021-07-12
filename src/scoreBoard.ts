@@ -1,4 +1,3 @@
-import { Score } from "./score";
 import { Team } from "./team";
 import { MIN_POINTS_TO_WIN_GAME, TennisMatch } from "./tennisMatch";
 
@@ -15,10 +14,10 @@ export class ScoreBoard{
     private visitor: Team;
 
 
-    constructor(match: TennisMatch, local: Team, visitor: Team){
+    constructor(match: TennisMatch){
         this.match = match
-        this.local = local
-        this.visitor = visitor
+        this.local = match.getLocalTeam();
+        this.visitor = match.getVisitorTeam();
     }
 
     render() {

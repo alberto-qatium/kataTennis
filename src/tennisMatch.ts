@@ -38,6 +38,13 @@ export class TennisMatch {
         return this.scoreFor(team).getScore()
     }
 
+    getVisitorTeam(): Team {
+        return this.visitor
+    }
+    getLocalTeam(): Team {
+        return this.local
+    }
+
     hasWonMatch(team: Team){
         const {sets: setsWon} = this.scoreFor(team).getScore()
         return setsWon == SETS_TO_WIN_MATCH 

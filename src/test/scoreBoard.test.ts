@@ -44,6 +44,6 @@ function aScoreBoard() {
   const local = new Team([new Player("Paco")]);
   const visitor = new Team([new Player("Lamo")]);
   const match = new TennisMatch(local, visitor);
-  const scoreBoard = new ScoreBoard(match, local, visitor);
+  const scoreBoard = new ScoreBoard(match);
   return { match, local, visitor, scoreBoard };
 }
